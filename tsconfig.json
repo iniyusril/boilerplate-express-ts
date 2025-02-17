@@ -6,20 +6,42 @@
         "rootDir": "./src",
         "baseUrl": "./src",
         "paths": {
-            "@/*": ["*"],
-            "@routes/*": ["routes/*"],
-            "@database/*": ["database/*"],
-            "@utils/*": ["utils/*"],
-            "@types/*": ["types/*"],
-            "@modules/*": ["modules/*"]
+            "@/*": [
+                "*"
+            ],
+            "@routes/*": [
+                "routes/*"
+            ],
+            "@database/*": [
+                "database/*"
+            ],
+            "@utils/*": [
+                "utils/*"
+            ],
+            "@types/*": [
+                "types/*"
+            ],
+            "@modules/*": [
+                "modules/*"
+            ]
         },
         "esModuleInterop": true,
-        "typeRoots": ["node_modules/@types"],
+        "typeRoots": [
+            "node_modules/@types"
+        ],
         "strict": true,
         "resolveJsonModule": true,
         "skipLibCheck": true,
-        "lib": ["esnext", "dom"]
+        "lib": [
+            "esnext",
+            "dom"
+        ]
     },
-    "include": ["src/**/*.ts", "src/database/models/index.ts"],
-    "exclude": ["node_modules"]
+    "include": [
+        "src/**/*.ts",
+        "src/database/models/index.ts"
+    ],
+    "exclude": [
+        "node_modules"
+    ]
 }

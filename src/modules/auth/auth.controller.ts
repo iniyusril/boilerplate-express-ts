@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import { signInService, signUpService } from './auth.service';
 import { success } from '@/types/express/response';
+import logger from '@/utils/logger';
 
 export const signUpController = async (
     req: Request,
@@ -11,6 +12,7 @@ export const signUpController = async (
         const userData = req.body;
         const response = await signUpService(userData);
 
+        logger.debug(req.context);
         res.status(201).json({
             message: 'Successfully signed up',
             data: response.user,
