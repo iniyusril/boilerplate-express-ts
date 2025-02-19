@@ -1,10 +1,12 @@
-import { DB } from '@/database';
-import { User } from '@/interfaces/user.interfaces';
+import { users } from '@prisma/client';
+import { prismaClient } from '../prisma/prisma.repo';
 
 export const repo = {
-    getUserProfile: async (
-        userId: string | undefined,
-    ): Promise<User | null> => {
-        return await DB.Users.findOne({ where: { id: userId } });
+    getUserProfile: async (userId: number): Promise<users> => {
+        return await prismaClient.users.findUniqueOrThrow({
+            where: {
+                id: userId,
+            },
+        });
     },
 };

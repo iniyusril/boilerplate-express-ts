@@ -1,38 +1,34 @@
-import { NextFunction, Request, Response } from 'express';
+import { Request, Response } from 'express';
 import { signInService, signUpService } from './auth.service';
-import { success } from '@/types/express/response';
+import { errorResponse, successResponse } from '@/types/express/response';
 import logger from '@/utils/logger';
 
 export const signUpController = async (
     req: Request,
     res: Response,
-    next: NextFunction,
 ): Promise<void> => {
     try {
         const userData = req.body;
         const response = await signUpService(userData);
 
         logger.debug(req.context);
-        res.status(201).json({
-            message: 'Successfully signed up',
-            data: response.user,
-        });
+        return successResponse(res, 200, 'success', response);
     } catch (error) {
-        next(error);
+        return errorResponse(res, error);
     }
 };
 
-export const signInController = async (
+export const loginController = async (
     req: Request,
     res: Response,
-    next: NextFunction,
 ): Promise<void> => {
     try {
         const userData = req.body;
         const response = await signInService(userData);
 
-        success(res, 200, 'success', response);
+        logger.debug(req.context);
+        return successResponse(res, 200, 'success', response);
     } catch (error) {
-        next(error);
+        return errorResponse(res, error);
     }
 };

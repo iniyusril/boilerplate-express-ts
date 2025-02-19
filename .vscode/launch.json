@@ -9,10 +9,10 @@
             "request": "launch",
             "runtimeArgs": [
                 "run",
-                "start"
+                "debug"
             ],
             "env": {
-                "NODE_ENV": "local"
+                "NODE_ENV": "devopment"
             },
             "runtimeExecutable": "npm",
             "skipFiles": [

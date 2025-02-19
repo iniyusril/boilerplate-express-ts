@@ -1,18 +1,17 @@
-import { User } from '@/interfaces/user.interfaces';
-import { validateSignIn, validateSignUp } from './auth.validator';
-import repo from './auth.repo';
 import { compareSync, hash } from 'bcrypt';
-import { generateJWT } from '@/middlewares/jwt.service';
+import { generateJWT, verifyJWT } from '@/middlewares/jwt.service';
 import { JWT_ACCESS_TOKEN_SECRET } from '@/config';
 import { CustomError } from '@/utils/custom-error';
+import { LoginRequest, UserRequest } from './dto/auth.dto';
+import { prismaClient } from '../prisma/prisma.repo';
+import { validateCreateUser, validateLogin } from './auth.validator';
+import { findUserByEmail } from './dto/auth.repo';
+import jwt from 'jsonwebtoken';
 
-export const signUpService = async (userData: User) => {
-    const { error } = validateSignUp(userData);
-    if (error) {
-        throw new CustomError(error.details[0].message, 400);
-    }
+export const signUpService = async (userData: UserRequest) => {
+    validateCreateUser(userData);
 
-    const findUser = await repo.findUserByEmail(userData.email);
+    const findUser = await findUserByEmail(userData.email);
     if (findUser) {
         throw new CustomError(`Email ${userData.email} already exists`, 409);
     }
@@ -22,25 +21,21 @@ export const signUpService = async (userData: User) => {
     );
     const username = `${userData.email.split('@')[0]}-${randomId}`;
     const hashedPassword = await hash(userData.password, 10);
-    const newUserData = await repo.createUser({
-        ...userData,
-        username,
-        password: hashedPassword,
+    const newUserData = await prismaClient.users.create({
+        data: {
+            ...userData,
+            username: username,
+            password: hashedPassword,
+        },
     });
 
     return { user: newUserData };
 };
 
-export const signInService = async (userData: User) => {
-    const { error } = validateSignIn(userData);
-    if (error) {
-        throw new CustomError(error.details[0].message, 400);
-    }
+export const signInService = async (userData: LoginRequest) => {
+    validateLogin(userData);
 
-    const user = await repo.findUserByEmail(userData.email);
-    if (!user) {
-        throw new CustomError('Email or password is invalid', 401);
-    }
+    const user = await findUserByEmail(userData.email);
 
     const validPassword = compareSync(userData.password, user.password);
     if (!validPassword) {
@@ -57,4 +52,9 @@ export const signInService = async (userData: User) => {
     );
 
     return { user, accessToken };
+};
+
+export const validateToken = async (token: string): Promise<jwt.JwtPayload> => {
+    const payload = await verifyJWT(token, JWT_ACCESS_TOKEN_SECRET as string);
+    return payload;
 };

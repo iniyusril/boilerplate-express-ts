@@ -20,8 +20,7 @@
         "build": "tsc && tsc-alias && echo 'Build Finished! 👍'",
         "lint": "eslint --ignore-path .gitignore --ext .ts src/",
         "lint:fix": "npm run lint -- --fix",
-        "migration:generate": "sequelize migration:generate --name",
-        "migration": "sequelize db:migrate"
+        "debug": "npx prisma generate && tsx ./src/server.ts"
     },
     "author": "Pius Restiantoro",
     "license": "MIT",
@@ -30,28 +29,27 @@
         "url": "https://github.com/pius706975/express-typescript-sequelize-boilerplate.git"
     },
     "dependencies": {
+        "@prisma/client": "^6.4.0",
         "bcrypt": "^5.1.1",
         "cors": "^2.8.5",
         "dotenv": "^16.4.5",
-        "express": "^4.21.1",
+        "express": "^4.21.2",
         "joi": "^17.13.3",
         "jsonwebtoken": "^9.0.2",
-        "pg": "^8.13.0",
-        "pg-hstore": "^2.3.4",
-        "sequelize": "^6.37.4",
-        "sequelize-typescript": "^2.1.6",
+        "redis": "^4.7.0",
         "swagger-jsdoc": "^6.2.8",
         "swagger-ui-express": "^5.0.1",
         "tsconfig-paths": "^4.2.0",
         "winston": "^3.15.0",
-        "winston-daily-rotate-file": "^5.0.0"
+        "winston-daily-rotate-file": "^5.0.0",
+        "zod": "^3.24.2"
     },
     "devDependencies": {
         "@types/bcrypt": "^5.0.2",
         "@types/cors": "^2.8.17",
         "@types/express": "^5.0.0",
         "@types/jsonwebtoken": "^9.0.7",
-        "@types/node": "^22.10.5",
+        "@types/node": "^22.13.4",
         "@types/pg": "^8.11.10",
         "@types/sequelize": "^4.28.20",
         "@types/swagger-jsdoc": "^6.0.4",
@@ -63,6 +61,7 @@
         "eslint-plugin-prettier": "^4.2.1",
         "nodemon": "^3.1.7",
         "prettier": "^2.7.1",
+        "prisma": "^6.4.0",
         "sequelize-cli": "^6.6.2",
         "ts-node": "^10.9.2",
         "tsc-alias": "^1.8.10",
